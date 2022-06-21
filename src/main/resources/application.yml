@@ -1,0 +1,19 @@
+
+spring:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    open-in-view: false
+    show-sql: true
+
+app:
+  fixedBlockExtensions:
+  - bat
+  - cmd
+  - com
+  - cpl
+  - exe
+  - js
+  - scr
+  maxCustomExtension: 200
