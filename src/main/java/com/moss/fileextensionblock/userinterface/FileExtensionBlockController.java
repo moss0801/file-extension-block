@@ -2,7 +2,6 @@ package com.moss.fileextensionblock.userinterface;
 
 import com.moss.fileextensionblock.dto.AddFileExtensionBlockCommand;
 import com.moss.fileextensionblock.dto.FileExtensionBlockDto;
-import com.moss.fileextensionblock.dto.FileExtensionBlocksDto;
 import com.moss.fileextensionblock.dto.UpdateFileExtensionBlockCommand;
 import com.moss.fileextensionblock.service.FileExtensionBlockService;
 import org.springframework.web.bind.annotation.*;

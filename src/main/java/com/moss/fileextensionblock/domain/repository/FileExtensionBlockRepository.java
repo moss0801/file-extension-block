@@ -1,13 +1,15 @@
 package com.moss.fileextensionblock.domain.repository;
 
 import com.moss.fileextensionblock.domain.model.FileExtensionBlock;
-import com.moss.fileextensionblock.dto.FileExtensionBlockDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 파일 확장자 차단 Repository
+ */
 @Repository
 public interface FileExtensionBlockRepository extends JpaRepository<FileExtensionBlock, Long> {
     /**
@@ -20,12 +22,10 @@ public interface FileExtensionBlockRepository extends JpaRepository<FileExtensio
      */
     Optional<FileExtensionBlock> findByExtension(String extension);
 
-    List<FileExtensionBlock> findAllByOrderByExtensionAsc();
-
     /**
-     * 고정 여부로 목록조회
+     * 목록 조회, 확장자 오름차순
      */
-    List<FileExtensionBlock> findAllByIsFixedOrderByExtensionAsc(Boolean isFixed);
+    List<FileExtensionBlock> findAllByOrderByExtensionAsc();
 
     /**
      * 커스텀 수 조회
