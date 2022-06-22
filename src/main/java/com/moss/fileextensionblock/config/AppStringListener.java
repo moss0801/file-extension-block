@@ -7,6 +7,9 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * App 초기화
+ */
 @Component
 public class AppStringListener implements ApplicationListener<ApplicationStartedEvent> {
     private AppProperties appProperties;
