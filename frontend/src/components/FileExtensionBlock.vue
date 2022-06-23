@@ -36,13 +36,6 @@
         </div>
       </div>
     </div>
-    <div>
-      <button type="button" class="btn btn-primary">
-        Messages <span class="badge badge-light">4</span>
-      </button>
-    </div>
-
-
   </div>
 </div>
 </template>
