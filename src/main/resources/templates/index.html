@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th=http://www.thymeleaf.org>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Heroku</title>
+    <link th:href="@{/dist/css/app.css?(v=${version})}" rel=stylesheet>
+</head>
+<body>
+<div id="app"></div>
+<script type=text/javascript th:src="@{/dist/js/app.js?(v=${version})}"></script>
+<script type=text/javascript th:src="@{/dist/js/chunk-vendors.js?(v=${version})}"></script>
+</body>
+</html>
