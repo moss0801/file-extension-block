@@ -46,7 +46,7 @@ public class FileExtensionBlockTest {
 
     @Test
     public void new_If_isFixed_false_isEnable_false_Then_throw_IllegalArgumentException() {
-        // // Arrange & Act & Assert
+        // Arrange & Act & Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             FileExtensionBlock model = FileExtensionBlock.builder()
                     .extension("abc")
@@ -54,5 +54,14 @@ public class FileExtensionBlockTest {
                     .isEnabled(false)
                     .build();
         });
+    }
+
+    @Test
+    public void resolveExtension() {
+        // Arrange & Act & Assert
+        Assertions.assertEquals("sh", FileExtensionBlock.resolveExtension("sh"));
+        Assertions.assertEquals("sh", FileExtensionBlock.resolveExtension("SH"));
+        Assertions.assertEquals("sh", FileExtensionBlock.resolveExtension("sH"));
+        Assertions.assertEquals("sh", FileExtensionBlock.resolveExtension("Sh"));
     }
 }

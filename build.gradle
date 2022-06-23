@@ -23,7 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
-    implementation 'org.modelmapper:modelmapper:2.4.3'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.modelmapper:modelmapper:3.1.0'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
@@ -33,4 +34,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+jar {
+    enabled = false
+}
+
+springBoot {
+    buildInfo()
 }

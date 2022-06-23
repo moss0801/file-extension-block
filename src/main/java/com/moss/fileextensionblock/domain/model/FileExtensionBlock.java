@@ -1,6 +1,7 @@
 package com.moss.fileextensionblock.domain.model;
 
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
@@ -44,6 +45,13 @@ public class FileExtensionBlock {
             throw new IllegalArgumentException("custom can not be disabled.");
         }
         isEnabled = enabled;
+    }
+
+    /**
+     * 확장자 trim 및 lowercase 처리
+     */
+    public static String resolveExtension(String extension) {
+        return StringUtils.hasText(extension) ? extension.trim().toLowerCase() : extension;
     }
 
     public static class Constraint {

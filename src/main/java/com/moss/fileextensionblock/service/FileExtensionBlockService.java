@@ -4,6 +4,7 @@ import com.moss.fileextensionblock.config.AppProperties;
 import com.moss.fileextensionblock.domain.model.FileExtensionBlock;
 import com.moss.fileextensionblock.domain.repository.FileExtensionBlockRepository;
 import com.moss.fileextensionblock.dto.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,26 +12,22 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 파일 확장자 차단 서비스
  */
+@Slf4j
 @Validated
 @Service
 public class FileExtensionBlockService {
-    private FileExtensionBlockRepository repository;
-    private AppProperties appProperties;
-    private Set<String> fixedExtensionSet;
-    private int maxCustomExtension;
+    private final FileExtensionBlockRepository repository;
+    private final int maxCustomExtension;
 
     public FileExtensionBlockService(FileExtensionBlockRepository repository, AppProperties appProperties) {
         this.repository = repository;
-        this.appProperties = appProperties;
-        this.fixedExtensionSet = new HashSet<>(appProperties.getFixedBlockExtensions());
         this.maxCustomExtension = appProperties.getMaxCustomExtension();
+        log.info("maxCustomExtension: " + maxCustomExtension);
     }
 
     /**
@@ -38,7 +35,7 @@ public class FileExtensionBlockService {
      */
     @Transactional
     public void addFileExtensionBlock(@Valid AddFileExtensionBlockCommand command) {
-        var extension = command.getExtension().trim().toLowerCase();
+        var extension = FileExtensionBlock.resolveExtension(command.getExtension());
 
         // 중복 체크
         if (repository.existsByExtension(extension)) {
@@ -70,8 +67,14 @@ public class FileExtensionBlockService {
      * 파일 확장자 차단 목록 조회
      */
     @Transactional(readOnly = true)
-    public List<FileExtensionBlockDto> getFileExtensionBlockDtos() {
-        return DtoAssembler.to(repository.findAllByOrderByExtensionAsc(), FileExtensionBlockDto.class);
+    public List<FileExtensionBlockDto> getFileExtensionBlockDtos(@Valid FileExtensionBlockDtosQuery query) {
+        List<FileExtensionBlock> list;
+        if (null != query.getIsEnabled()) {
+            list = repository.findAllByIsEnabledOrderByExtensionAsc(query.getIsEnabled());
+        } else {
+            list = repository.findAllByOrderByExtensionAsc();
+        }
+        return DtoAssembler.to(list, FileExtensionBlockDto.class);
     }
 
     /**
@@ -79,7 +82,7 @@ public class FileExtensionBlockService {
      */
     @Transactional
     public void updateFileExtensionBlock(@Valid UpdateFileExtensionBlockCommand command) {
-        var extension = command.getExtension().trim().toLowerCase();
+        var extension = FileExtensionBlock.resolveExtension(command.getExtension());
 
         // 존재 확인
         var optional = repository.findByExtension(extension);
@@ -88,6 +91,8 @@ public class FileExtensionBlockService {
         }
 
         var block = optional.get();
+
+        // 수정
         block.setEnabled(command.getIsEnabled());
     }
 
@@ -95,8 +100,9 @@ public class FileExtensionBlockService {
      * 파일 확장자 삭제
      */
     @Transactional
-    public void deleteFileExtensionBlock(@NotBlank @Length(max = FileExtensionBlock.Constraint.ExtensionMaxLength) String extension) {
-        extension = extension.trim().toLowerCase();
+    public void deleteFileExtensionBlock(
+            @NotBlank @Length(max = FileExtensionBlock.Constraint.ExtensionMaxLength) String extension) {
+        extension = FileExtensionBlock.resolveExtension(extension);
 
         // 존재 확인
         var optional = repository.findByExtension(extension);
@@ -104,9 +110,7 @@ public class FileExtensionBlockService {
             throw new IllegalStateException("extension " + extension + " is not exists.");
         }
         
-        var block = optional.get();
-        
         // 삭제
-        repository.delete(block);
+        repository.delete(optional.get());
     }
 }

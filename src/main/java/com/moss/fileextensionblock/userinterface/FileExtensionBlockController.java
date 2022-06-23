@@ -2,6 +2,7 @@ package com.moss.fileextensionblock.userinterface;
 
 import com.moss.fileextensionblock.dto.AddFileExtensionBlockCommand;
 import com.moss.fileextensionblock.dto.FileExtensionBlockDto;
+import com.moss.fileextensionblock.dto.FileExtensionBlockDtosQuery;
 import com.moss.fileextensionblock.dto.UpdateFileExtensionBlockCommand;
 import com.moss.fileextensionblock.service.FileExtensionBlockService;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/fileExtensionBlocks")
 public class FileExtensionBlockController {
-    private FileExtensionBlockService service;
+    private final FileExtensionBlockService service;
 
     public FileExtensionBlockController(FileExtensionBlockService service) {
         this.service = service;
@@ -22,7 +23,6 @@ public class FileExtensionBlockController {
 
     /**
      * 파일 확장자 차단 추가
-     * @param command
      */
     @PostMapping
     public void addFileExtensionBlock(@RequestBody AddFileExtensionBlockCommand command) {
@@ -33,8 +33,9 @@ public class FileExtensionBlockController {
      * 파일 확장자 차단 목록 조회
      */
     @GetMapping
-    public List<FileExtensionBlockDto> getFileExtensionBlocks() {
-        return service.getFileExtensionBlockDtos();
+    public List<FileExtensionBlockDto> getFileExtensionBlocks(
+            @ModelAttribute FileExtensionBlockDtosQuery query) {
+        return service.getFileExtensionBlockDtos(query);
     }
 
     /**

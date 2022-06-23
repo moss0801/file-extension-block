@@ -26,6 +26,9 @@ public interface FileExtensionBlockRepository extends JpaRepository<FileExtensio
      * 목록 조회, 확장자 오름차순
      */
     List<FileExtensionBlock> findAllByOrderByExtensionAsc();
+    List<FileExtensionBlock> findAllByIsEnabledOrderByExtensionAsc(Boolean isEnabled);
+
+
 
     /**
      * 커스텀 수 조회
