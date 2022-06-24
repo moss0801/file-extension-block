@@ -1,5 +1,7 @@
 # 파일 확장자 차단
 
+https://moss-file-extension-block.herokuapp.com/
+
 ## 기술 스택
 * Front End : vue.js
 * Back End : spring boot
@@ -39,4 +41,6 @@ create table file_extension_blocks (
 * 파일 확장자 차단 목록 조회시 활성화 여부 필터 제공
   * 운영 페이지에서는 등록된 모든 목록 조회
   * 파일 업로드 시에는 활성화된 확장자 목록만 조회하여 사용
+* @ControllerAdvice를 통한 공통 에러 처리
+* @Valid를 이용한 유효성 검사
 

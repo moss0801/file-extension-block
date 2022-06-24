@@ -22,7 +22,7 @@
       <b-input-group>
         <b-form-input v-model.trim="custom" maxLength="20"></b-form-input>
         <b-input-group-append>
-          <b-button variant="primary" @click="addCustom()">+추가</b-button>
+          <b-button variant="primary" :disabled="!custom" @click="addCustom()">+추가</b-button>
         </b-input-group-append>
       </b-input-group>
     </div>
@@ -36,13 +36,6 @@
         </div>
       </div>
     </div>
-    <div>
-      <button type="button" class="btn btn-primary">
-        Messages <span class="badge badge-light">4</span>
-      </button>
-    </div>
-
-
   </div>
 </div>
 </template>
@@ -121,8 +114,15 @@ export default {
       }, this.error);
     },
     error(err) {
+      let message = "";
+      if (err.response && err.response.data) {
+        const data = err.response.data;
+        message = `[${data.error}] ${data.message}`;
+      } else {
+        message = err.message;
+      }
       console.log(err)
-      alert(err)
+      alert(message)
     }
   }
 }
